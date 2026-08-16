@@ -1,0 +1,22 @@
+# The Arzens Knowledge Assistant — pinned for reproducible deploys.
+# Verified together on Python 3.11 (Streamlit Community Cloud's default).
+#
+# Note: the umbrella `langchain` package is intentionally NOT listed. Nothing
+# here imports it, and leaving it out keeps the Streamlit Cloud build both
+# faster and less likely to hit a resolver conflict.
+
+streamlit==1.61.1
+
+# LLM + embeddings
+langchain-google-genai==4.3.3
+langchain-core==1.5.4
+langchain-text-splitters==1.1.2
+
+# Vector store
+langchain-chroma==1.1.0
+chromadb==1.5.9
+
+# Ingestion
+pypdf==6.15.0
+requests==2.34.2
+beautifulsoup4==4.15.0
