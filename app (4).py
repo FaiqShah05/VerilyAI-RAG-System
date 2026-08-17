@@ -1,4 +1,5 @@
 """VerilyAI — single-file Streamlit RAG app.
+"""
 
 Everything (config, errors, sources, chunking, embeddings, ingestion,
 vector store, RAG logic, transcript export, and the UI) lives in this
@@ -1511,6 +1512,7 @@ def inject_brand_css() -> None:
             background: var(--paper);
             color: var(--ink);
             font-family: 'Inter', sans-serif;
+            color-scheme: light;
         }}
 
         [data-testid="stAppViewContainer"] > .main {{
@@ -1562,6 +1564,37 @@ def inject_brand_css() -> None:
             color: rgba(237, 234, 225, 0.65) !important;
         }}
 
+        /* Sidebar form fields (URL box, file uploader text, etc.) — these
+           sit on the dark navy sidebar but must render as a light "paper"
+           field with dark ink text, or the text disappears entirely. */
+        [data-testid="stSidebar"] textarea,
+        [data-testid="stSidebar"] input[type="text"],
+        [data-testid="stSidebar"] input[type="password"],
+        [data-testid="stSidebar"] input[type="number"] {{
+            background: var(--paper) !important;
+            color: var(--ink) !important;
+            caret-color: var(--ink) !important;
+            border: 1px solid rgba(230, 190, 100, 0.45) !important;
+            border-radius: 6px !important;
+        }}
+        [data-testid="stSidebar"] textarea::placeholder,
+        [data-testid="stSidebar"] input::placeholder {{
+            color: rgba(26, 26, 26, 0.45) !important;
+        }}
+        [data-testid="stSidebar"] textarea:focus,
+        [data-testid="stSidebar"] input:focus {{
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 1px var(--gold) !important;
+        }}
+        /* File uploader dropzone: keep it light with dark ink text too */
+        [data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
+            background: var(--paper) !important;
+            border: 1px dashed rgba(230, 190, 100, 0.45) !important;
+        }}
+        [data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * {{
+            color: var(--ink) !important;
+        }}
+
         /* Primary buttons: gold seal */
         .stButton > button[kind="primary"],
         button[data-testid="stFormSubmitButton"] {{
@@ -1602,17 +1635,48 @@ def inject_brand_css() -> None:
             color: var(--navy) !important;
         }}
 
-        /* Chat bubbles */
+        /* Chat bubbles — force ink text on white regardless of the
+           browser/OS theme, so answers never render white-on-white. */
         [data-testid="stChatMessage"] {{
-            background: white;
+            background: white !important;
             border-radius: 10px;
             border: 1px solid var(--paper-dim);
-            padding: 0.25rem 0.5rem;
+            padding: 0.6rem 0.9rem;
+        }}
+        [data-testid="stChatMessage"] p,
+        [data-testid="stChatMessage"] li,
+        [data-testid="stChatMessage"] span,
+        [data-testid="stChatMessage"] div,
+        [data-testid="stChatMessage"] strong,
+        [data-testid="stChatMessage"] em,
+        [data-testid="stChatMessage"] h1,
+        [data-testid="stChatMessage"] h2,
+        [data-testid="stChatMessage"] h3,
+        [data-testid="stChatMessage"] h4 {{
+            color: var(--ink) !important;
+        }}
+        [data-testid="stChatMessage"] code {{
+            color: var(--navy) !important;
+            background: var(--paper-dim) !important;
+        }}
+        [data-testid="stChatMessage"] a {{
+            color: var(--teal) !important;
         }}
 
-        /* Chat input */
+        /* Chat input — the main search/ask bar. Explicit light field with
+           dark text so it never inherits an invisible dark-on-dark or
+           light-on-light combo from the ambient theme. */
         [data-testid="stChatInput"] {{
             border-color: var(--navy) !important;
+            background: white !important;
+        }}
+        [data-testid="stChatInput"] textarea {{
+            background: white !important;
+            color: var(--ink) !important;
+            caret-color: var(--ink) !important;
+        }}
+        [data-testid="stChatInput"] textarea::placeholder {{
+            color: rgba(26, 26, 26, 0.45) !important;
         }}
 
         /* Radio (grounding mode) */
@@ -1623,12 +1687,20 @@ def inject_brand_css() -> None:
         /* Alerts: recolor to match brand instead of default streamlit red/blue */
         [data-testid="stAlertContentInfo"] {{
             background: rgba(198, 149, 44, 0.10) !important;
+            color: var(--ink) !important;
         }}
         [data-testid="stAlertContentSuccess"] {{
             background: rgba(47, 111, 98, 0.10) !important;
+            color: var(--ink) !important;
         }}
         [data-testid="stAlertContentError"] {{
             background: rgba(176, 70, 58, 0.08) !important;
+            color: var(--ink) !important;
+        }}
+        [data-testid="stAlertContentInfo"] *,
+        [data-testid="stAlertContentSuccess"] *,
+        [data-testid="stAlertContentError"] * {{
+            color: var(--ink) !important;
         }}
 
         /* Expanders (citations) get a gold left border — the "seal" motif */
